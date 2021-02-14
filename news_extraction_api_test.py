@@ -2,30 +2,39 @@
 import news_extraction_api
 import unittest
 import glog as log
+import spacy
 
 sentence = "The Trump team appears poised to argue before the Senate that no evidence exists where Trump explicitly commands a rioter to go to the Capitol and commit acts of violence."
 
 class news_extraction_api_test(unittest.TestCase):
 
     def test_summarize(self):
-        instance = news_extraction_api.news_extraction_api(sentence)
+        nlp = spacy.load("en_core_web_sm")
+        instance = news_extraction_api.news_extraction_api(sentence, nlp)
+        instance.max_depth = 1
         s = instance.summarize()
-        assert (s == "appears team poised.")
-        #log.info(s)
+        log.info("starting to assert now")
+        log.info(s)
+        assert (s == "team appears poised")
+        
+
 
     def test_tokenize(self):
-        instance = news_extraction_api.news_extraction_api(sentence)
+        nlp = spacy.load("en_core_web_sm")
+        instance = news_extraction_api.news_extraction_api(sentence, nlp)
         assert(len(instance.tokens) == 31)
         #log.info(len(tokens))
     
     def test_who(self):
-        instance = news_extraction_api.news_extraction_api(sentence)
+        nlp = spacy.load("en_core_web_sm")
+        instance = news_extraction_api.news_extraction_api(sentence, nlp)
         who = instance.who()
         assert(who.text == "team")
         #log.info(who)
 
     def test_what(self):
-        instance = news_extraction_api.news_extraction_api(sentence)
+        nlp = spacy.load("en_core_web_sm")
+        instance = news_extraction_api.news_extraction_api(sentence, nlp)
         what = instance.what()
         #log.info(what)
         assert(what.text == "appears")
@@ -37,6 +46,13 @@ class news_extraction_api_test(unittest.TestCase):
     #def tearDown(self):
      #   super(news_extraction_api_test, self).tearDown()
       #  self.instance = None
+
+class sentence_summarization_test(unittest.TestCase):
+
+    def test_separate_text(self):
+        sent = news_extraction_api.separate_text()
+        log.info(sent)
+
 
 if __name__ == '__main__':
     unittest.main()
