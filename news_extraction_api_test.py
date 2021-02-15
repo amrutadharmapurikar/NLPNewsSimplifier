@@ -50,9 +50,15 @@ class news_extraction_api_test(unittest.TestCase):
 class sentence_summarization_test(unittest.TestCase):
 
     def test_separate_text(self):
-        sent = news_extraction_api.separate_text()
+        #f = open("/Users/23amrutad/Projects/NLPNewsSimplifier/test_data_1.txt", "r")
+        #text = f.read()
+        text = "America's ex-president, named Trump, who has orange hair was acquitted yesterday by the Senate. He was impeached by the House a few weeks ago."       
+        sent = news_extraction_api.separate_text(text)
+        log.info(type(sent))
+        assert (type(sent) == type(""))
+        
+        print("******************")
         log.info(sent)
-
 
 if __name__ == '__main__':
     unittest.main()

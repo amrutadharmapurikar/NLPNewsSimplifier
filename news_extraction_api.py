@@ -57,17 +57,16 @@ class news_extraction_api(object):
             if t.dep_ == "ROOT":
                 return t
 
-def separate_text():
+def separate_text(text):
     tokenizer = nltk.data.load('tokenizers/punkt/PY3/english.pickle')
-    f = open("/Users/23amrutad/Projects/NLPNewsSimplifier/test_data_1.txt", "r")
-    text = f.read()
     sentences = tokenizer.tokenize(text)
     s = ""
-    log.info("Here I am starting to tokenize the sentences.")
+    #log.info("Here I am starting to tokenize the sentences.")
     nlp = spacy.load("en_core_web_sm")
     for sent in sentences:
         if len(sent) != 0:
             instance = news_extraction_api(sent, nlp)
+            s += " "
             s += instance.summarize()
-    log.info("Finished tokenizing the sentences.")
+    #log.info("Finished tokenizing the sentences.")
     return s
