@@ -60,5 +60,13 @@ class sentence_summarization_test(unittest.TestCase):
         print("******************")
         log.info(sent)
 
+    def test_paragraph_delineation(self):
+        text = "My dog is very furry and is a putrid green color that looks like somebody threw up on him.\nMy cat is very smart and is a interesting red color that looks like somebody threw up on him."
+        sent = news_extraction_api.separate_text(text)
+        log.info(sent)
+        assert(sent == "My dog is very furry and is color\n My cat is very smart and is color")
+        
+
+
 if __name__ == '__main__':
     unittest.main()

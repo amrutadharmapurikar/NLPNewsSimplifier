@@ -25,13 +25,15 @@ class news_extraction_api(object):
         return s
 
     def summarize(self):
-        log.info("starting to summarize")
+        #log.info("starting to summarize")
         """This function should put into a string tokens that are above a certain depth.
         """
         self.important(self.what(), 0)
         s = ""
         punct = [".", ",", "?", "!"]
         for w in self.sentence.split(" "):
+            if len(w) == 0:
+                continue
             if w[-1] in punct:
                 w = w[0:-1]
             if w in self.keywords:
@@ -59,14 +61,28 @@ class news_extraction_api(object):
 
 def separate_text(text):
     tokenizer = nltk.data.load('tokenizers/punkt/PY3/english.pickle')
-    sentences = tokenizer.tokenize(text)
+    split_paragraphs = text.split("\\n")
+    log.info(len(split_paragraphs))
+    sentences = []
+    for para in split_paragraphs:
+        if len(sentences) != 0:
+            sentences.append("\n")
+        sentences += tokenizer.tokenize(para)
+    #sentences = tokenizer.tokenize(text)
     s = ""
     #log.info("Here I am starting to tokenize the sentences.")
     nlp = spacy.load("en_core_web_sm")
     for sent in sentences:
+        #log.info(sent)
         if len(sent) != 0:
-            instance = news_extraction_api(sent, nlp)
-            s += " "
-            s += instance.summarize()
+            if sent == "\n":
+                s += "<br></br>"
+                log.info("i got HERERERERERERERERERERERERERERERERERERe.")
+            else:
+                instance = news_extraction_api(sent, nlp)
+                if len(s) != 0:
+                    s += " "
+                s += instance.summarize()
     #log.info("Finished tokenizing the sentences.")
+    log.info(s)
     return s

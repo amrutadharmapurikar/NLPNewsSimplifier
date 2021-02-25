@@ -19,9 +19,23 @@ def summarize_sentence():
     return summary
 
 # This method takes a block of text and returns the summarized version.
-@app.route('/summarize_text', methods = ['GET'])
+@app.route('/separate_text', methods = ['POST'])
 def separate_text():
+    original_text = str(request.data)
+    summary = news_extraction_api.separate_text(original_text)
+    #summary.headers.add("Access-Control-Allow-Origin", "*")
+    global summarized_text
+    summarized_text = summary
+    #log.info(summarized_text)
+    #print(summarized_text)
+    return summary
+
+
+# This method takes a block of text and returns the summarized version.
+@app.route('/get_separate_text', methods = ['GET'])
+def get_separate_text():
     original_text = request.args.get("text", "")
+    log.info(original_text)
     summary = news_extraction_api.separate_text(original_text)
     #summary.headers.add("Access-Control-Allow-Origin", "*")
     global summarized_text
@@ -35,6 +49,7 @@ def separate_text():
 def return_text():
     global summarized_text
     #log.info(summarized_text)
+    #summarized_text += "<br> Hello</br>"
     return summarized_text
 
 
