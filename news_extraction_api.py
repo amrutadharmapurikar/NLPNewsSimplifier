@@ -1,6 +1,8 @@
 import spacy
 import glog as log
 import nltk
+from transformers import pipeline
+
 
 class news_extraction_api(object):  
 
@@ -58,6 +60,32 @@ class news_extraction_api(object):
         for t in self.tokens:
             if t.dep_ == "ROOT":
                 return t
+
+def separate_text_transformers(text):
+    tokenizer = nltk.data.load('tokenizers/punkt/PY3/english.pickle')
+    split_paragraphs = text.split("\\n")
+    summary = ""
+    sentences = []
+    summarizer = pipeline("summarization")
+    for para in split_paragraphs: # each paragraph
+        para = str(para)
+        log.info(para)
+        to_tokenize = para
+        max_len = int (len(para.split(" "))/2)
+        log.info(para.split(" "))
+        max_len += 2
+        log.info(max_len)
+        summarized = summarizer(to_tokenize, min_length=0, max_length=max_len)
+        log.info(len(summarized))
+        log.info(summarized)
+        t = summarized[0].get('summary_text')
+        log.info(len(t))
+        log.info(t)
+        summary += t
+        if len(t) != 0:
+            summary += "<br></br>"
+        log.info(summary)
+    return summary
 
 def separate_text(text):
     tokenizer = nltk.data.load('tokenizers/punkt/PY3/english.pickle')

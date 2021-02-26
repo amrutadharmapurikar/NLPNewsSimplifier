@@ -5,7 +5,7 @@ function content_script() {
         var text = document.body.innerText;
         //console.log(text);
         const Http = new XMLHttpRequest();
-        post_url = 'http://127.0.0.1:20000/separate_text?'
+        post_url = 'http://127.0.0.1:20000/separate_text_transformers?'
         /*const url = 'http://127.0.0.1:20000/separate_text?text=' + text;
         Http.open("GET", url);
         Http.send();

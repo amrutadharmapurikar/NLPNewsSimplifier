@@ -30,6 +30,20 @@ def separate_text():
     #print(summarized_text)
     return summary
 
+# This method takes a block of text and returns the summarized version.
+@app.route('/separate_text_transformers', methods = ['POST'])
+def separate_text_transformers():
+    print("INSEPARATE_TEXT_TRANSFORMERS")
+    original_text = str(request.data)
+    summary = news_extraction_api.separate_text_transformers(original_text)
+    #summary.headers.add("Access-Control-Allow-Origin", "*")
+    global summarized_text
+    summarized_text = summary
+    log.info(summarized_text)
+    log.info("-------------------------")
+    #print(summarized_text)
+    return summary
+
 
 # This method takes a block of text and returns the summarized version.
 @app.route('/get_separate_text', methods = ['GET'])
@@ -44,12 +58,18 @@ def get_separate_text():
     #print(summarized_text)
     return summary
 
+
+
+
 # This method will return the summarized_text
 @app.route('/return_text', methods = ['GET'])
 def return_text():
+    print("IN_RETURN_TEXT")
     global summarized_text
     #log.info(summarized_text)
     #summarized_text += "<br> Hello</br>"
+    log.info(summarized_text)
+    log.info("--------------------------------")
     return summarized_text
 
 
