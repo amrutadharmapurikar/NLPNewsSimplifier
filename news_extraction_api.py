@@ -15,6 +15,7 @@ class news_extraction_api(object):
             self.tokens.append(token)
         self.keywords = []
         self.max_depth = 2
+        self.words = []
 
     def unjumble(self):
         s = ""
@@ -26,7 +27,7 @@ class news_extraction_api(object):
                 s += w
         return s
 
-    def summarize(self):
+     def summarize(self):
         #log.info("starting to summarize")
         """This function should put into a string tokens that are above a certain depth.
         """
@@ -43,8 +44,37 @@ class news_extraction_api(object):
                     s += " "
                 s += w
         return s
+
+    def summarize_h1(self):
+        #log.info("starting to summarize")
+        """This function should put into a string tokens that are above a certain depth.
+        """
+        self.important(self.what(), 0)
+        s = ""
+        punct = [".", ",", "?", "!"]
+        
+        in_order = []
+
+        for token in self.doc:
+            if token.text in self.keywords:
+                for w in self.words:
+                    if w[1] == token.head and w[0] == token.text:
+                        in_order.append(str(token))
+        
+        for w in self.sentence.split(" "):
+            if len(w) == 0:
+                continue
+            if w[-1] in punct:
+                w = w[0:-1]
+            if w in in_order:
+                if len(s) != 0:
+                    s += " "
+                s += w
+        return s
    
     def important(self, tok, depth):
+        l = [tok.text, tok.head]
+        self.words.append(l)
         self.keywords.append(tok.text)
         depth += 1
         if depth <= self.max_depth:
