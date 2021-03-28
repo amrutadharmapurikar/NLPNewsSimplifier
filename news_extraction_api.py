@@ -27,7 +27,7 @@ class news_extraction_api(object):
                 s += w
         return s
 
-     def summarize(self):
+    def summarize(self):
         #log.info("starting to summarize")
         """This function should put into a string tokens that are above a certain depth.
         """
